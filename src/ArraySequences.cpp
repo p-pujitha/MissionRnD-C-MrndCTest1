@@ -33,5 +33,97 @@ Difficulty : Medium
 
 int * find_sequences(int *arr, int len){
 	//Return final array which has 6indexes [AP1_S,AP1_E,AP2_S,AP2_E,GP1_S,GP2_E]
-	return NULL;
+	
+	if (arr == NULL || len < 0)
+		return NULL;
+	if (len == 1)
+		return arr;
+	int *new_array = (int *)malloc(sizeof(int) * 6), k = 0;
+	int *differences = (int *)malloc(sizeof(int) * 10), j = 0;
+	for (int f = 0; f < len-1; f++)
+	{
+		int diff = arr[f+1] - arr[f];
+		differences[j] = diff;
+		j++;
+	}
+	int i=0;
+	for ( i = 0; i < j; i++)
+	{
+		if (differences[i] == differences[i + 1])
+		{
+			new_array[k] = i;
+			i = i + 1;
+
+			while (differences[i] == differences[i + 1])
+			{
+				i = i + 1;
+			}
+			k++;
+			new_array[k] = i+1;
+			break;
+		}
+	}
+	int l;
+	for ( l = i + 1; l < len - 2; l++)
+	{
+		if (differences[l] == differences[l + 1])
+		{
+
+			k++;
+			new_array[k] = l;
+			l++;
+			while (l < len - 2)
+			{
+				if (differences[l] != differences[l + 1])
+				{
+					k++;
+					new_array[k] = l+1;
+					break;
+				}
+				l++;
+			}
+		}
+	}
+	if (l == len-1 ){
+		for (int m = 0; m < len; m++)
+		{
+			if ((differences[m] * 2) == differences[m + 1])
+			{
+				k++;
+				new_array[k] = m;
+				m++;
+				while (differences[m] == differences[m + 1])
+				{
+					m++;
+				}
+				k++;
+				new_array[k] = m;
+				break;
+			}
+
+
+		}
+	}
+	else
+	{
+		for (int m = l-1; m < len - 1; m++)
+		{
+
+			if ((differences[m] * 2) == differences[m + 1])
+			{
+				k++;
+				new_array[k] = m;
+				m++;
+				while (differences[m] == differences[m + 1])
+				{
+					m++;
+				}
+				k++;
+				new_array[k] = m+1;
+				break;
+			}
+		}
+	}
+	return new_array;
 }
+	
